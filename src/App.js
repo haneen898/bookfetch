@@ -1,24 +1,36 @@
 import logo from './logo.svg';
 import './App.css';
 
+import React, { useState, useEffect } from 'react';
+
 function App() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch ('https://www.googleapis.com/books/v1/volumes?q=danbrown')
+    .then (resp => resp.json())
+    .then (data => setData(data.items) )
+    console.log(data)
+  
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+     <div>
+       {
+     data?.map((d)=>
+     (
+      <>
+      <h1>{d?.volumeInfo.title}</h1>
+      <p>{d?.volumeInfo.subtitle}</p>
+      <img src={d?.volumeInfo.imageLinks.smallThumbnail} alt=''/>
+      </>
+      
+     )
+     )
+   }  
+     </div>
+
+     
   );
 }
 
